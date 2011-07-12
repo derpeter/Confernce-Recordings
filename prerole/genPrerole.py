@@ -37,6 +37,9 @@ output=[]
 def build_svg():
     
     #check the inputs filds
+    if args.id == None:
+        print "id not defined"
+        sys.exit(1)
     if args.title == None:
         print "title not defined"
         sys.exit(1)
