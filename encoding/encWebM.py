@@ -18,7 +18,6 @@ import fileinput
 import commands
 import sys
 import os
-import multiprocessing
 
 parser = argparse.ArgumentParser(description='Encode a dv file to h264: make sure you have ffmpeg $PATH')
 parser.add_argument('-i', action="store", dest="id", help="talk id")
@@ -33,7 +32,7 @@ if args.id == None:
     sys.exit(1)
         
 if args.threads == None:
-    args.threads = multiprocessing.cpu_count()
+    args.threads = 0
 
 def encWebM():
     if os.path.exists(args.videodir+args.id+".dv"):
