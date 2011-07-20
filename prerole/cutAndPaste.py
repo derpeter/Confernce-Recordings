@@ -16,11 +16,11 @@
 parser = argparse.ArgumentParser(description='Cut the rawdv an paste prerole: make sure you have ffmpeg $PATH')
 parser.add_argument('-i', action="store", dest="id", help="talk id")
 parser.add_argument('-o', action="store", dest="output", help="output dir", default='')
-parser.add_argument('-v', action="store", dest="videodir", help="video dir", default='')
 parser.add_argument('-p', action="store", dest="preroledir", help="prerole dir", default='')
 parser.add_argument('-t', action="store", dest="threads", help="threads to use by ffmpeg")
 parser.add_argument('-s', action="store", dest="start", help="start time format hh:mm:ss")
 parser.add_argument('-e', action="store", dest="end", help="end time format hh:mm:ss")
+parser.add_argument('-w', action="store", dest="workdir", help="working dir", default='')
 args = parser.parse_args()
 
 #check the inputs filds
@@ -33,17 +33,19 @@ if args.start == None:
 if args.id == None:
     print "end time defined"
     sys.exit(1)
+if args.threads == None:
+    args.threads = 0
 
 def paste():
     if os.path.exists(args.output+args.id+".dv"):
         commands.getstatusoutput("rm -f "+args.output+args.id+".dv")
-    result = commands.getstatusoutput('cat '+args.preroledir+args.id+'prerole.dv '+ args.videodir+args.id +"dv > "+args.output+args.id+".dv")
+    result = commands.getstatusoutput('cat '+args.preroledir+args.id+'prerole.dv '+ args.workdir+args.id +"dv > "+args.output+args.id+".dv")
     if result[0] != 0:
         print "cut failed"
         sys.exit(1)
 def cut():
     to=args.end - args.start 
-    result = commands.getstatusoutput('ffmpeg -i '+args.videodir+args.id+'.dv -ss '+args.start+' -t '+to+' -vcodec copy -acodec copy -target dv cutted '+args.id+'.dv') 
+    result = commands.getstatusoutput('ffmpeg -threads '+ str(args.threads) +' -i '+args.videodir+args.id+'.dv -ss '+args.start+' -t '+to+' -vcodec copy -acodec copy -target dv cutted '+args.workdir+args.id+'.dv') 
     if result[0] !=0:
         print "cutting failed"
         sys.ecit(1)
