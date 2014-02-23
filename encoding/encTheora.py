@@ -19,7 +19,7 @@ import commands
 import sys
 import os
 
-parser = argparse.ArgumentParser(description='Encode a dv file to Theora: make sure you have ffmpeg $PATH')
+parser = argparse.ArgumentParser(description='VOC Control - post processing and publishing the 1337 way')
 parser.add_argument('-i', action="store", dest="id", help="talk id")
 parser.add_argument('-o', action="store", dest="output", help="output dir", default='')
 parser.add_argument('-v', action="store", dest="videodir", help="video dir", default='')
@@ -30,6 +30,8 @@ parser.add_argument('-d', action="store", dest="date", help="date of the talk")
 parser.add_argument('-b', action="store", dest="begin", help="begin of the talk")
 
 args = parser.parse_args()
+
+
 
 #check the inputs filds
 if args.id == None:
